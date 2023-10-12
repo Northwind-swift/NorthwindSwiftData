@@ -1,0 +1,33 @@
+name: Build and Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  iOS:
+    runs-on: macos-13
+    steps:
+      - name: Select latest available Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0.0'
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Build Swift Package
+        run: xcodebuild build -scheme NorthwindSwiftData -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' | xcpretty && exit ${PIPESTATUS[0]}
+      - name: Run Tests
+        run: xcodebuild test -scheme NorthwindSwiftData -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' | xcpretty && exit ${PIPESTATUS[0]}
+  nextstep:
+    runs-on: macos-13
+    steps:
+      - name: Select latest available Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0.0'
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Build Swift Debug Package
+        run: swift build -c debug
+      - name: Build Swift Release Package
+        run: swift build -c release
