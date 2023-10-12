@@ -10,7 +10,10 @@ let package = Package(
   ],
   targets: [
     .target(name: "NorthwindSwiftData",
-            resources: [ .copy("Resources/Northwind.store") ]),
+            exclude: [ "Resources/LICENSE" ],
+            resources: [
+              .copy("Resources/Northwind.store"),
+            ]),
     .testTarget(name: "NorthwindSwiftDataTests",
                 dependencies: [ "NorthwindSwiftData" ])
   ]
